@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 import time
 import myket.constant as cts
 from selenium.webdriver.common.action_chains import ActionChains
@@ -18,10 +19,21 @@ from myket.data_store import write_csv
 # options = webdriver.ChromeOptions()
 # options.binary_location = "/usr/bin/brave-browser"
 # driver = webdriver.Chrome(service=service, options=options)
-service = Service("/usr/bin/chromedriver")
-options = webdriver.ChromeOptions()
-options.binary_location = "/usr/bin/chromium-browser"
+
+
+# Set Chrome options
+options = Options()
+options.add_argument("--headless")  # Enable headless mode
+options.add_argument("--no-sandbox")  # Bypass OS security model
+# Prevent crashes in resource-constrained environments
+options.add_argument("--disable-dev-shm-usage")
+# Required for some CI environments
+options.add_argument("--remote-debugging-port=9222")
+
+# Initialize Chrome WebDriver
+service = Service('/usr/bin/chromedriver')
 driver = webdriver.Chrome(service=service, options=options)
+
 
 
 csv_file_path = "myket/data/myket.csv"
