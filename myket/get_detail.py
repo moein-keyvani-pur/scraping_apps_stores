@@ -78,6 +78,12 @@ def get_details(driver, address):
     except NoSuchElementException:
         app_category = ""
 
+    try:
+        app_constructor = app.find_element(
+            By.XPATH, "./div[2]/table/tbody/tr[9]/td[2]").text
+    except NoSuchElementException:
+        app_constructor = ""
+
     return {
         "name": app_name,
         "link": app_link,
@@ -90,5 +96,6 @@ def get_details(driver, address):
         "count_viewer": app_count_viewer,
         "volume": app_volume,
         "type": app_type,
-        "category": app_category
+        "category": app_category,
+        "app_constructor": app_constructor
     }
