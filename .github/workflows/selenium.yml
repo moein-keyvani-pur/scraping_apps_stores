@@ -1,11 +1,15 @@
-name: Selenium Test Workflow
-on: 
+name: Selenium Test
+
+on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
 jobs:
-  selenium-tests:
+  selenium:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # Maximum runtime (6 hours for free runners)
     steps:
@@ -26,8 +30,8 @@ jobs:
           sudo apt-get install -y chromium-browser
           sudo apt-get install -y chromium-chromedriver
 
-      - name: Run Selenium Tests
-        run: python -m unittest discover tests/
+      - name: Run Main Script
+        run: python main.py
 
       - name: Archive Test Results
         if: always()

@@ -14,9 +14,13 @@ from myket.data_store import create_csv
 from myket.data_store import write_csv
 
 
-service = Service("/usr/local/bin/chromedriver/chromedriver")
+# service = Service("/usr/local/bin/chromedriver/chromedriver")
+# options = webdriver.ChromeOptions()
+# options.binary_location = "/usr/bin/brave-browser"
+# driver = webdriver.Chrome(service=service, options=options)
+service = Service("/usr/bin/chromedriver")
 options = webdriver.ChromeOptions()
-options.binary_location = "/usr/bin/brave-browser"
+options.binary_location = "/usr/bin/chromium-browser"
 driver = webdriver.Chrome(service=service, options=options)
 
 
@@ -36,7 +40,7 @@ def get_apps_games_myket(url, category_list):
         all_links.append(get_more_link(driver, url))
     flat_list = [item for sublist in all_links for item in sublist]
     for i in range(len(flat_list)):
-        apps = get_all_items(driver, flat_list[i]) 
+        apps = get_all_items(driver, flat_list[i])
         print(f"length of apps is --------> {len(apps)}")
         for app in apps:
             app.click()
@@ -56,7 +60,7 @@ def get_apps_games_myket(url, category_list):
 if __name__ == "__main__":
 
     create_csv(csv_file_path, header)
-    
+
     app_url = f"{cts.base_rul}{cts.app_path}"
     apps_category = cts.apps_category
     get_apps_games_myket(app_url, apps_category)
