@@ -1,8 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 
 
-def get_details(driver,address):
+def get_details(driver, address):
     driver.get(address)
     app = driver.find_elements(By.XPATH, "/html/body/div[3]/section[1]")[0]
     app_name = app.find_element(By.XPATH, "./div[1]/div[1]/div[2]/h1").text
@@ -10,7 +11,11 @@ def get_details(driver,address):
         By.XPATH, "./div[1]/div[2]/a").get_attribute("href")
     app_img = app.find_element(
         By.XPATH, "./div[1]/div[1]/div[1]/img").get_attribute("src")
-    app_subtitle = app.find_element(By.XPATH, "./div[1]/div[1]/div[2]/h2").text
+    try:
+        app_subtitle = app.find_element(
+            By.XPATH, "./div[1]/div[1]/div[2]/h2").text
+    except NoSuchElementException:
+        app_subtitle = ""
     app_version = app.find_element(
         By.XPATH, "./div[2]/table/tbody/tr[1]/td[2]").text
     app_last_update = app.find_element(
