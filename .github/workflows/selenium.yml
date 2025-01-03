@@ -32,10 +32,9 @@ jobs:
 
       - name: Run Main Script
         run: python main.py
-
-      - name: Archive Test Results
-        if: always()
+        
+      - name: Archive Scraped Data (CSV)
         uses: actions/upload-artifact@v4
         with:
-          name: selenium-test-results
-          path: test-results/
+          name: scraped-data-csv
+          path: myket/data/myket.csv

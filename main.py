@@ -62,6 +62,7 @@ def get_apps_games_myket(url, category_list):
             elements = get_details(driver,
                                    driver.current_url)
             print(elements)
+            print(flat_list[i])
             print("\n-----------------------------\n")
             write_csv(csv_file_path, header, elements)
             driver.back()
