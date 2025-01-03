@@ -28,19 +28,15 @@ header = [
 ]
 
 
-if __name__ == "__main__":
-
-    create_csv(csv_file_path, header)
-
+def get_apps_games_myket(url, category_list):
     all_links = []
-    apps_url = f"{cts.base_rul}{cts.app_path}"
-    for category in cts.apps_category:
+    apps_url = url
+    for category in category_list:
         url = f"{apps_url}/{category}"
         all_links.append(get_more_link(driver, url))
-        break  # ! remove break
     flat_list = [item for sublist in all_links for item in sublist]
     for i in range(len(flat_list)):
-        apps = get_all_items(driver, flat_list[i+3])  # ! change i+3 to i
+        apps = get_all_items(driver, flat_list[i]) 
         print(f"length of apps is --------> {len(apps)}")
         for app in apps:
             app.click()
@@ -55,7 +51,19 @@ if __name__ == "__main__":
             driver.back()
             WebDriverWait(driver, 10).until(EC.element_to_be_clickable(app))
             time.sleep(1)
-        break  # ! remove break
+
+
+if __name__ == "__main__":
+
+    create_csv(csv_file_path, header)
+    
+    app_url = f"{cts.base_rul}{cts.app_path}"
+    apps_category = cts.apps_category
+    get_apps_games_myket(app_url, apps_category)
+
+    games_url = f"{cts.base_rul}{cts.game_path}"
+    games_category = cts.game_category
+    get_apps_games_myket(games_url, games_category)
 
     driver.close()
     driver.quit()
