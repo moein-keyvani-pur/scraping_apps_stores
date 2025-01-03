@@ -74,7 +74,7 @@ if __name__ == "__main__":
     create_csv(csv_file_path, header)
 
     app_url = f"{cts.base_rul}{cts.app_path}"
-    apps_category = cts.apps_category[2:7]  #! change 2 
+    apps_category = cts.apps_category[7:]  #! change 2 
     get_apps_games_myket(app_url, apps_category)
 
     # games_url = f"{cts.base_rul}{cts.game_path}"
