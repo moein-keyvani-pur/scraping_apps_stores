@@ -40,7 +40,7 @@ if __name__ == "__main__":
     create_csv(csv_file_path, cts.csv_header)
 
     games_url = f"{cts.base_rul}{cts.game_path}"
-    games_category = cts.game_category[2:4]
+    games_category = cts.game_category[3:6]
     get_apps_games_myket(csv_file_path, driver, games_url, games_category)
     print("end of games")
 

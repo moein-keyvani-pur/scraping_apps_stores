@@ -20,16 +20,23 @@ def get_apps_games_myket(csv_file_path, driver, url, category_list):
         apps = get_all_items(driver, flat_list[i])
         print(f"length of apps is --------> {len(apps)}")
         for app in apps:
-            app.click()
-            WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.TAG_NAME, 'h1')))
-            time.sleep(1)
-            elements = get_details(driver,
-                                   driver.current_url)
-            print(elements)
-            print("\n-----------------------------\n")
-            write_csv(csv_file_path, cts.csv_header, elements)
-            driver.back()
-            WebDriverWait(driver, 10).until(EC.element_to_be_clickable(app))
-            time.sleep(1)
+            try:
+                app.click()
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.TAG_NAME, 'h1')))
+                elements = get_details(driver,
+                                       driver.current_url)
+                print(elements)
+                print("\n-----------------------------\n")
+                write_csv(csv_file_path, cts.csv_header, elements)
+                driver.back()
+                WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable(app))
+            except Exception as e:
+                print(e)
+                driver.back()
+                WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable(app))
+                time.sleep(1)
+                continue
         print(flat_list[i])
