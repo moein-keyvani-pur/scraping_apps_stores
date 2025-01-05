@@ -7,8 +7,7 @@ def get_all_items(driver, address):
     driver.get(address)
     scroll_pause_time = 2  # Time to wait for loading after each scroll
     last_height = driver.execute_script("return document.body.scrollHeight")
-    count = 0
-    while True and count < 3:
+    while True:
         # Scroll down
         driver.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);")
@@ -24,7 +23,6 @@ def get_all_items(driver, address):
         if new_height == last_height:
             break
         last_height = new_height
-        count += 1
     time.sleep(scroll_pause_time)
     data = []
     child_count = 0

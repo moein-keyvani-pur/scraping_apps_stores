@@ -1,5 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -7,6 +10,7 @@ def get_details(driver, address):
     driver.get(address)
     app = driver.find_elements(By.XPATH, "/html/body/div[3]/section[1]")[0]
 
+    # Fixed items
     try:
         app_name = app.find_element(By.XPATH, "./div[1]/div[1]/div[2]/h1").text
     except NoSuchElementException:
@@ -30,72 +34,45 @@ def get_details(driver, address):
     except NoSuchElementException:
         app_subtitle = ""
 
-    try:
-        app_version = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[1]/td[2]").text
-    except NoSuchElementException:
-        app_version = ""
+    # Iterating from the 4th row onward in the table
+    table_data = {}
+    rows = app.find_elements(By.XPATH, "./div[2]/table/tbody/tr")
 
-    try:
-        app_last_update = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[2]/td[2]").text
-    except NoSuchElementException:
-        app_last_update = ""
+    for i in range(4, len(rows) + 1):
+        try:
+            td1 = app.find_element(
+                By.XPATH, f"./div[2]/table/tbody/tr[{i}]/td[1]").text
+            td2 = app.find_element(
+                By.XPATH, f"./div[2]/table/tbody/tr[{i}]/td[2]").text
+            if td1 == "نسخه":
+                td1 = "version"
+            elif td1 == "آخرین بروزرسانی":
+                td1 = "last_update"
+            elif td1 == "تعداد دانلود":
+                td1 = "count_download"
+            elif td1 == "امتیاز":
+                td1 = "rate"
+            elif td1 == "تعداد نظرات":
+                td1 = "count_viewer"
+            elif td1 == "حجم":
+                td1 = "volume"
+            elif td1 == "نوع":
+                td1 = "type"
+            elif td1 == "دسته‌بندی":
+                td1 = "category"
+            elif td1 == "سازنده":
+                td1 = "app_constructor"
+            else:
+                td1 = "data_file"
+            table_data[td1] = td2
+        except NoSuchElementException:
+            continue
 
-    try:
-        app_count_download = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[3]/td[2]").text
-    except NoSuchElementException:
-        app_count_download = ""
-
-    try:
-        app_rate = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[4]/td[2]").text
-    except NoSuchElementException:
-        app_rate = ""
-
-    try:
-        app_count_viewer = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[5]/td[2]").text
-    except NoSuchElementException:
-        app_count_viewer = ""
-
-    try:
-        app_volume = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[6]/td[2]").text
-    except NoSuchElementException:
-        app_volume = ""
-
-    try:
-        app_type = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[7]/td[2]").text
-    except NoSuchElementException:
-        app_type = ""
-
-    try:
-        app_category = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[8]/td[2]").text
-    except NoSuchElementException:
-        app_category = ""
-
-    try:
-        app_constructor = app.find_element(
-            By.XPATH, "./div[2]/table/tbody/tr[9]/td[2]").text
-    except NoSuchElementException:
-        app_constructor = ""
-
+    # Returning the collected data
     return {
         "name": app_name,
         "link": app_link,
         "img": app_img,
         "subtitle": app_subtitle,
-        "version": app_version,
-        "last_update": app_last_update,
-        "count_download": app_count_download,
-        "rate": app_rate,
-        "count_viewer": app_count_viewer,
-        "volume": app_volume,
-        "type": app_type,
-        "category": app_category,
-        "app_constructor": app_constructor
+        **table_data
     }
