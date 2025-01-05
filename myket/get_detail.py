@@ -38,7 +38,7 @@ def get_details(driver, address):
     table_data = {}
     rows = app.find_elements(By.XPATH, "./div[2]/table/tbody/tr")
 
-    for i in range(4, len(rows) + 1):
+    for i in range(1, len(rows) + 1):
         try:
             td1 = app.find_element(
                 By.XPATH, f"./div[2]/table/tbody/tr[{i}]/td[1]").text
@@ -62,6 +62,8 @@ def get_details(driver, address):
                 td1 = "category"
             elif td1 == "سازنده":
                 td1 = "app_constructor"
+            elif td1 == "قیمت":
+                td1 = "price"
             else:
                 td1 = "data_file"
             table_data[td1] = td2
