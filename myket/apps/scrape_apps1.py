@@ -38,7 +38,7 @@ if __name__ == "__main__":
     app_url = f"{cts.base_rul}{cts.app_path}"
     apps_category = cts.apps_category[:2]
     get_apps_games_myket(csv_file_path, driver, app_url, apps_category)
-    print("end of apps")
+    print("end of apps1")
 
     driver.close()
     driver.quit()
