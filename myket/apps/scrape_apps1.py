@@ -1,11 +1,15 @@
-from selenium import webdriver
+import sys
+import os
+sys.path.append(os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../")))
+
+from myket.main import get_apps_games_myket
+from myket.data_store import create_csv
+from selenium.webdriver.common.action_chains import ActionChains
+from myket import constant as cts
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import myket.constant as cts
-from selenium.webdriver.common.action_chains import ActionChains
-from myket.data_store import create_csv
-from myket.main import get_apps_games_myket
 
 
 # service = Service("/usr/local/bin/chromedriver/chromedriver")
