@@ -8,3 +8,8 @@ apps_category = ["productivity", "weather", 'food-and-drink', 'news-and-magazine
 
 game_category = ['action', 'strategy', 'racing', 'casual', 'puzzle',
                  'simulation', 'kids', 'word', 'sports', 'adventure']
+
+csv_header = [
+    "name", "link", "img", "subtitle", "version", "last_update",
+    "count_download", "rate", "count_viewer", "volume", "type", "category", "app_constructor", "price", "data_file"
+]
