@@ -168,69 +168,69 @@ jobs:
           name: apps-csv-5
           path: myket/data/myket_apps.csv
 
-  scrape_apps6:
-    if: contains(github.event.head_commit.message, 'run')
-    needs: scrape_apps5
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+  # scrape_apps6:
+  #   if: contains(github.event.head_commit.message, 'run')
+  #   needs: scrape_apps5
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 360
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.10'
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
+  #     - name: Install Dependencies
+  #       run: pip install -r requirements.txt
 
-      - name: Set up Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          sudo apt-get install -y chromium-chromedriver
+  #     - name: Set up Chrome and ChromeDriver
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y chromium-browser
+  #         sudo apt-get install -y chromium-chromedriver
 
-      - name: Run Apps Scraper 6
-        run: python myket/apps/scrape_apps6.py
+  #     - name: Run Apps Scraper 6
+  #       run: python myket/apps/scrape_apps6.py
 
-      - name: Upload Apps CSV 6
-        uses: actions/upload-artifact@v4
-        with:
-          name: apps-csv-6
-          path: myket/data/myket_apps.csv
+  #     - name: Upload Apps CSV 6
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: apps-csv-6
+  #         path: myket/data/myket_apps.csv
 
-  scrape_apps7:
-    if: contains(github.event.head_commit.message, 'run')
-    needs: scrape_apps6
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+  # scrape_apps7:
+  #   if: contains(github.event.head_commit.message, 'run')
+  #   needs: scrape_apps6
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 360
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.10'
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
+  #     - name: Install Dependencies
+  #       run: pip install -r requirements.txt
 
-      - name: Set up Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          sudo apt-get install -y chromium-chromedriver
+  #     - name: Set up Chrome and ChromeDriver
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y chromium-browser
+  #         sudo apt-get install -y chromium-chromedriver
 
-      - name: Run Apps Scraper 7
-        run: python myket/apps/scrape_apps7.py
+  #     - name: Run Apps Scraper 7
+  #       run: python myket/apps/scrape_apps7.py
 
-      - name: Upload Apps CSV 7
-        uses: actions/upload-artifact@v4
-        with:
-          name: apps-csv-7
-          path: myket/data/myket_apps.csv
+  #     - name: Upload Apps CSV 7
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: apps-csv-7
+  #         path: myket/data/myket_apps.csv
 
   # scrape_apps8:
   #   if: contains(github.event.head_commit.message, 'run')
@@ -328,92 +328,92 @@ jobs:
   #         name: apps-csv-10
   #         path: myket/data/myket_apps.csv
 
-  scrape_games1:
-    if: contains(github.event.head_commit.message, 'run')
-    needs: scrape_apps7
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+  # scrape_games1:
+  #   if: contains(github.event.head_commit.message, 'run')
+  #   needs: scrape_apps7
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 360
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.10'
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
+  #     - name: Install Dependencies
+  #       run: pip install -r requirements.txt
 
-      - name: Set up Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          sudo apt-get install -y chromium-chromedriver
+  #     - name: Set up Chrome and ChromeDriver
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y chromium-browser
+  #         sudo apt-get install -y chromium-chromedriver
 
-      - name: Run Games Scraper 1
-        run: python myket/games/scrape_games1.py
+  #     - name: Run Games Scraper 1
+  #       run: python myket/games/scrape_games1.py
 
-      - name: Upload Games CSV 1
-        uses: actions/upload-artifact@v4
-        with:
-          name: games-csv-1
-          path: myket/data/myket_games.csv
+  #     - name: Upload Games CSV 1
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: games-csv-1
+  #         path: myket/data/myket_games.csv
 
-  scrape_games2:
-    if: contains(github.event.head_commit.message, 'run')
-    needs: scrape_games1
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-      - name: Set up Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          sudo apt-get install -y chromium-chromedriver
+  # scrape_games2:
+  #   if: contains(github.event.head_commit.message, 'run')
+  #   needs: scrape_games1
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 360
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.10'
+  #     - name: Install Dependencies
+  #       run: pip install -r requirements.txt
+  #     - name: Set up Chrome and ChromeDriver
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y chromium-browser
+  #         sudo apt-get install -y chromium-chromedriver
           
-      - name: Run Games Scraper 2
-        run: python myket/games/scrape_games2.py
-      - name: Upload Games CSV 2
-        uses: actions/upload-artifact@v4
-        with:
-          name: games-csv-2
-          path: myket/data/myket_games.csv
+  #     - name: Run Games Scraper 2
+  #       run: python myket/games/scrape_games2.py
+  #     - name: Upload Games CSV 2
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: games-csv-2
+  #         path: myket/data/myket_games.csv
 
-  scrape_games3:
-    if: contains(github.event.head_commit.message, 'run')
-    needs: scrape_games2
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-      - name: Set up Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          sudo apt-get install -y chromium-chromedriver
-      - name: Run Games Scraper 3
-        run: python myket/games/scrape_games3.py
-      - name: Upload Games CSV 3
-        uses: actions/upload-artifact@v4
-        with:
-          name: games-csv-3
-          path: myket/data/myket_games.csv
+  # scrape_games3:
+  #   if: contains(github.event.head_commit.message, 'run')
+  #   needs: scrape_games2
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 360
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.10'
+  #     - name: Install Dependencies
+  #       run: pip install -r requirements.txt
+  #     - name: Set up Chrome and ChromeDriver
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y chromium-browser
+  #         sudo apt-get install -y chromium-chromedriver
+  #     - name: Run Games Scraper 3
+  #       run: python myket/games/scrape_games3.py
+  #     - name: Upload Games CSV 3
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: games-csv-3
+  #         path: myket/data/myket_games.csv
 
   # scrape_games4:
   #   if: contains(github.event.head_commit.message, 'run')
