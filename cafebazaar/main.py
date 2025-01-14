@@ -1,6 +1,11 @@
+from concurrent.futures import ThreadPoolExecutor
 import requests
 import json
-
+import time
+import random
+import string
+from requests.adapters import HTTPAdapter
+from urllib3 import Retry
 headers = {
     'accept': 'application/json, text/plain, */*',
     'content-type': 'application/json',
@@ -8,123 +13,110 @@ headers = {
 }
 
 
-def read_category_page(category_type: str):
+def read_more_item_page(more_item_path: str, proxy: str,index: int):
     url = "https://api.cafebazaar.ir/rest-v1/process/GetPageBodyRequest"
+    package_name_list = []
+    written_more_items=[]
+    length = 7
     payload = {
         "properties": {
             "language": 2,
-            "clientID": "xrq9ozqybuasdf5l9pmaxdsmk29c58yn",
-            "deviceID": "xrq9ozqybuasdf5l9pmaxdsmk29c58yn",
+            "clientID": "",
+            "deviceID": "",
             "clientVersion": "web"
         },
         "singleRequest": {
-            "getPageBodyRequest": {"path": category_type, "offset": 0}
+            "getPageBodyRequest": {"path": "", "offset": 0}
         }
     }
-    response = requests.post(url, json=payload, headers=headers).json()
-    rows = response['singleReply']['getPageBodyReply']['pageBody']['rows']
-    package_name_list = []
-    more_item_path_list = []
-    for row in rows:
-        row_expandInfo = row['simpleAppList']['expandInfo']
-        is_have_more_item = row_expandInfo['show']
-        if is_have_more_item:
-            more_item_path_list.append(
-                row_expandInfo['vitrinExpandInfo']['path'])
-        else:
-            apps = row['simpleAppList']['apps']
-            for app in apps:
-                package_name_list.append(app['info']['packageName'])
-    return package_name_list, more_item_path_list
+    retry_strategy = Retry(
+        total=5,
+        backoff_factor=1,
+        status_forcelist=[429, 500, 502, 503, 504]
+    )
 
-
-def read_more_item_page(more_item_path: str):
-    url = "https://api.cafebazaar.ir/rest-v1/process/GetPageBodyRequest"
-    package_name_list = []
-    payload = {
-        "properties": {
-            "language": 2,
-            "clientID": "xrq9ozqybuasdf5l9pmaxdsmk29c58yn",
-            "deviceID": "xrq9ozqybuasdf5l9pmaxdsmk29c58yn",
-            "clientVersion": "web"
-        },
-        "singleRequest": {
-            "getPageBodyRequest": {"path": more_item_path, "offset": 0}
-        }
+    session = requests.Session()
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("https://", adapter)
+    new_proxy = {
+        "http": proxy,
+        "https": proxy
     }
-    response = requests.post(url, json=payload, headers=headers).json()
-    rows = response['singleReply']['getPageBodyReply']['pageBody']['rows']
-    while len(rows > 0):
-        for row in rows:
-            packageName = row['simpleAppItem']['info']['packageName']
-            package_name_list.append(packageName)
-        payload['singleRequest']['getPageBodyRequest']['offset'] += 24
-        response = requests.post(url, json=payload, headers=headers).json()
-        rows = response['singleReply']['getPageBodyReply']['pageBody']['rows']
+    session.proxies.update(new_proxy)
+    for item_path in more_item_path:
+        try:
+            print(f"started reading {item_path}")
+            my_strrand = ''.join(random.choices(
+            string.ascii_letters + string.digits, k=length))
+            payload['properties']['clientID'] = f"xrq9ozqybuasdf5l9{my_strrand}k29c58yn"
+            payload['properties']['deviceID'] = f"xrq9ozqybuasdf5l9{my_strrand}k29c58yn"
+            payload['singleRequest']['getPageBodyRequest']['path'] = item_path
+            offset = 0
+            while True:
+                payload['singleRequest']['getPageBodyRequest']['offset'] = offset
+                response = session.post(url, json=payload, headers=headers).json()
+                rows = response['singleReply']['getPageBodyReply']['pageBody']['rows']
+                if not rows:
+                    break
+                for row in rows:
+                    packageName = row['simpleAppItem']['info']['packageName']
+                    package_name_list.append(packageName)
+                offset += 24
+                time.sleep(1)
+            written_more_items.append(item_path)
+            print(f"completed reading {item_path}")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            with open(f"cafebazaar/data/more_item_path_{index}.txt", "a") as file:
+                for item in written_more_items:
+                    file.write(f"{item}\n")
+            break
+
     return package_name_list
 
 
-def get_detail_app(package_name: str):
-    url = "https://api.cafebazaar.ir/rest-v1/process/appDetailsV2Request"
-    payload = {
-        "properties": {
-            "language": 2,
-            "clientID": "xrq9ozqybughjk5l9pmaxdsmk29c58yn",
-            "deviceID": "xrq9ozqybughjk5l9pmaxdsmk29c58yn",
-            "clientVersion": "web"
-        },
-        "singleRequest": {"appDetailsV2Request": {"packageName": package_name}}
-    }
-    response = requests.post(url, json=payload, headers=headers).json()
-    meta = response['singleReply']['appDetailsV2Reply']['meta']
-    media=response['singleReply']['appDetailsV2Reply']['media']
-    package=response['singleReply']['appDetailsV2Reply']['package']
-    data={
-        "name": meta['name'],
-        "email":meta['email'],
-        "phoneNumber":meta['phoneNumber'],
-        "homepageUrl": meta['homepageUrl'],
-        "shortDescription":meta['shortDescription'],
-        "app_constuctor":meta['author']['name'],
-        "rate":meta['reviewInfo']['averageRate'],
-        "category":meta['category']['name'],
-        "type":meta['editorChoice']['title'],
-        "count_download":meta['installCount']['range'],
-        "price":meta['payment']['price'],
-        "priceString":meta['payment']['priceString'],
-        "volume":f"{package['verboseSize']} {package['verboseSizeLabel']}",
-        "size":package['size'],
-        "version":package['versionName'],
-        "last_update":package['lastUpdated'],
-        "count_viewer":meta['reviewInfo']['verboseReviewCount'],
-        "img":media['iconUrl'],
-        "pagckage_name":package['name']
-    }
-    return data
-
+def load_proxies_from_file(proxy_file):
+    formatted_lines = []
+    with open(proxy_file, "r") as file:
+        for line in file:
+            parts = line.strip().split(':')
+            if len(parts) == 4:
+                ip, port, user, password = parts
+                formatted_line = f'socks5://{user}:{password}@{ip}:{port}'
+                formatted_lines.append(formatted_line)
+    return formatted_lines
 
 
 if __name__ == "__main__":
-    list_app_category = []
-    with open("cafebazaar/utils/app_category.txt", "r")as file:
-        for line in file:
-            list_app_category.append(line.strip())
+    # selected_proxies = load_proxies_from_file(
+    #     "cafebazaar/utils/working_proxies.txt")
+    selected_proxies=["http://128.140.113.110:5678"]
     package_name_list = []
     more_item_path_list = []
-    for category in list_app_category:
-        package_names, more_items_pathes = read_category_page(category)
-        package_name_list.append(package_names)
-        more_item_path_list.append(more_items_pathes)
-        break
-    package_flat_list = [item for sublist in package_name_list for item in sublist]
-    print(len(package_flat_list))
+    with open("cafebazaar/utils/more_item_path.txt", "r")as file:
+        for item in file:
+            more_item_path_list.append(item)
+    print(len(more_item_path_list))
 
-    # for more_item_path in more_item_path_list:
-    #     package_name_list.append(read_more_item_page(more_item_path))   
-        
-    # package_flat_list = [item for sublist in package_name_list for item in sublist]
-    # package_flat_list=['com.farsitel.bazaar']
-    # for package_name in package_flat_list:
-    #     data=get_detail_app(package_name)
-    #     print(data)
-    #     break
+    slices = []
+    slice_size = max(1, len(more_item_path_list) // len(selected_proxies))
+
+    for i in range(0, len(more_item_path_list), slice_size):
+        slices.append(more_item_path_list[i:i + slice_size])
+
+    max_workers = min(len(selected_proxies), len(slices))
+    print(f"max_workers-->{max_workers}")
+
+    try:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [executor.submit(read_more_item_page, more_item_path=code_slice,
+                                       proxy=selected_proxies[i % len(selected_proxies)],index=i) for i, code_slice in enumerate(slices)]
+            for future in futures:
+                package_name_list.extend(future.result())
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    # write packge_name_list to file
+    with open("cafebazaar/utils/initial_package_names.txt", "a") as file:
+        for item in package_name_list:
+            file.write(f"{item}\n")
