@@ -63,11 +63,11 @@ For Selenium to function correctly, ensure you have the appropriate WebDriver in
 3. The data will be saved as a JSON or CSV file in the `output` directory.
 
 ### Automating with GitHub Actions
-1. Set up GitHub Actions by configuring the `scraping.yml` file in the `.github/workflows/` directory.
+1. Set up GitHub Actions by configuring the `selenium.yml` file in the `.github/workflows/` directory.
 2. Push the changes to your repository:
    ```bash
    git add .
-   git commit -m "Set up GitHub Actions"
+   git commit -m "myket-run GitHub Actions"
    git push origin main
    ```
 3. The workflow will automatically execute the scraper according to the defined schedule.
