@@ -1,0 +1,10 @@
+category_strategy
+category_action
+category_arcade
+category_casual
+category_racing
+category_simulation
+category_word-trivia
+category_kids-games
+category_puzzle
+category_sports-game

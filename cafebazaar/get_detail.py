@@ -1,5 +1,10 @@
 import requests
-from main import headers
+
+headers = {
+    'accept': 'application/json, text/plain, */*',
+    'content-type': 'application/json',
+    'origin': 'https://cafebazaar.ir'
+}
 
 def get_detail_app(package_name: str):
     url = "https://api.cafebazaar.ir/rest-v1/process/appDetailsV2Request"
@@ -18,23 +23,24 @@ def get_detail_app(package_name: str):
     package = response['singleReply']['appDetailsV2Reply']['package']
     data = {
         "name": meta['name'],
-        "email": meta['email'],
-        "phoneNumber": meta['phoneNumber'],
-        "homepageUrl": meta['homepageUrl'],
+        "link": f"https://cafebazaar.ir/app/{package_name}",
+        "img": media['iconUrl'],
         "shortDescription": meta['shortDescription'],
-        "app_constuctor": meta['author']['name'],
-        "rate": meta['reviewInfo']['averageRate'],
-        "category": meta['category']['name'],
-        "type": meta['editorChoice']['title'],
-        "count_download": meta['installCount']['range'],
-        "price": meta['payment']['price'],
-        "priceString": meta['payment']['priceString'],
-        "volume": f"{package['verboseSize']} {package['verboseSizeLabel']}",
-        "size": package['size'],
         "version": package['versionName'],
         "last_update": package['lastUpdated'],
+        "count_download": meta['installCount']['range'],
+        "rate": meta['reviewInfo']['averageRate'],
         "count_viewer": meta['reviewInfo']['verboseReviewCount'],
-        "img": media['iconUrl'],
+        "volume": f"{package['verboseSize']} {package['verboseSizeLabel']}",
+        "type": meta['editorChoice']['title'],
+        "category": meta['category']['name'],
+        "app_constuctor": meta['author']['name'],
+        "price": meta['payment']['price'],
+        "priceString": meta['payment']['priceString'],
+        "homepageUrl": meta['homepageUrl'],
+        "phoneNumber": meta['phoneNumber'],
+        "email": meta['email'],
+        "size": package['size'],
         "pagckage_name": package['name']
     }
     return data

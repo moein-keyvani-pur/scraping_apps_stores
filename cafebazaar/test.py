@@ -20,13 +20,13 @@ payload = {
 }
 session = requests.Session()
 proxy = {
-    "http": "http://31.56.78.215:8080",
-    "https": "http://31.56.78.215:8080"
+    "http": "http://130.162.180.254:8888",
+    "https": "http://130.162.180.254:8888"
 }
 session.proxies.update(proxy)
 
 try:
     response = session.post(url, json=payload, headers=headers).json()
-    print("Public IP Address:", response.json()['status_code'])
+    print("Public IP Address:", response)
 except requests.exceptions.RequestException as e:
     print(f"An error occurred: {e}")

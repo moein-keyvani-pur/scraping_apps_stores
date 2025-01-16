@@ -1,7 +1,11 @@
-from main import headers
 import requests
 
 
+headers = {
+    'accept': 'application/json, text/plain, */*',
+    'content-type': 'application/json',
+    'origin': 'https://cafebazaar.ir'
+}
 def read_category_page(category_type: str):
     url = "https://api.cafebazaar.ir/rest-v1/process/GetPageBodyRequest"
     payload = {
@@ -12,7 +16,7 @@ def read_category_page(category_type: str):
             "clientVersion": "web"
         },
         "singleRequest": {
-            "getPageBodyRequest": {"path": category_type, "offset": 0}
+            "getPageBodyRequest": {"path": category_type, "offset": 24}
         }
     }
     response = requests.post(url, json=payload, headers=headers).json()
