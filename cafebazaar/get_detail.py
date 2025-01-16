@@ -1,3 +1,5 @@
+import random
+import string
 import requests
 
 headers = {
@@ -11,12 +13,16 @@ def get_detail_app(package_name: str):
     payload = {
         "properties": {
             "language": 2,
-            "clientID": "xrq9ozqybughjk5l9pmaxdsmk29c58yn",
-            "deviceID": "xrq9ozqybughjk5l9pmaxdsmk29c58yn",
+            "clientID": "",
+            "deviceID": "",
             "clientVersion": "web"
         },
         "singleRequest": {"appDetailsV2Request": {"packageName": package_name}}
     }
+    my_strrand = ''.join(random.choices(
+    string.ascii_letters + string.digits, k=7))
+    payload['properties']['clientID'] = f"xrq9ozqybuasdf5l9{my_strrand}k29c58yn"
+    payload['properties']['deviceID'] = f"xrq9ozqybuasdf5l9{my_strrand}k29c58yn"
     response = requests.post(url, json=payload, headers=headers).json()
     meta = response['singleReply']['appDetailsV2Reply']['meta']
     media = response['singleReply']['appDetailsV2Reply']['media']
