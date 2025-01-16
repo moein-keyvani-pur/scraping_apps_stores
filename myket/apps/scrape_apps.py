@@ -1,15 +1,15 @@
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+sys.path.append(os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../")))
 
-from selenium import webdriver
+from myket.main import get_apps_games_myket
+from myket.data_store import create_csv
+from selenium.webdriver.common.action_chains import ActionChains
+from myket import constant as cts
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-import myket.constant as cts
-from selenium.webdriver.common.action_chains import ActionChains
-from myket.data_store import create_csv
-from myket.main import get_apps_games_myket
 
 
 # service = Service("/usr/local/bin/chromedriver/chromedriver")
@@ -40,9 +40,9 @@ if __name__ == "__main__":
     create_csv(csv_file_path, cts.csv_header)
 
     app_url = f"{cts.base_rul}{cts.app_path}"
-    apps_category = cts.apps_category[4:6]
+    apps_category = cts.apps_category
     get_apps_games_myket(csv_file_path, driver, app_url, apps_category)
-    print("end of apps")
+    print("end of apps1")
 
     driver.close()
     driver.quit()
