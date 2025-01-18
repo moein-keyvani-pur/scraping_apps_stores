@@ -2,7 +2,7 @@
 import json
 
 
-with open("cafebazaar/data/cafebazaar_games.json", "r") as file:
+with open("cafebazaar/data/cafebazaar_apps.json", "r") as file:
     loaded_data = json.load(file)
 
 print(len(loaded_data))
@@ -11,7 +11,7 @@ print(len(loaded_data))
 import csv
 
 # Define the CSV file path
-csv_file_path = "data.csv"
+csv_file_path = "cafebazaar_apps.csv"
 
 # Write the JSON data to a CSV file
 with open(csv_file_path, mode="w", newline="", encoding="utf-8") as file:

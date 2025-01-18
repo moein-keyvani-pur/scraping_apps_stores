@@ -91,7 +91,7 @@ if __name__ == "__main__":
     error_app_list = []
     json_app_list = []
     app_package_names = []
-    with open("cafebazaar/utils/app_package_names.txt", "r")as file:
+    with open("cafebazaar/data/error_app.txt", "r")as file:
         for item in file:
             app_package_names.append(item.strip())
 
@@ -117,30 +117,31 @@ if __name__ == "__main__":
 
 
 
-    error_game_list = []
-    json_game_list = []
-    game_package_names = []
-    with open("cafebazaar/utils/game_package_names.txt", "r")as file:
-        for item in file:
-            game_package_names.append(item.strip())
+    # error_game_list = []
+    # json_game_list = []
+    # game_package_names = []
+    # with open("cafebazaar/utils/game_package_names.txt", "r")as file:
+    #     for item in file:
+    #         game_package_names.append(item.strip())
 
-    print(len(game_package_names))
+    # print(len(game_package_names))
 
-    for app in game_package_names:
-        try:
-            data = get_detail_app(app)
-            json_game_list.append(data)
-            time.sleep(0.3)
-        except Exception as e:
-            error_game_list.append(app)
-            continue
+    # for app in game_package_names:
+    #     try:
+    #         data = get_detail_app(app)
+    #         json_game_list.append(data)
+    #         time.sleep(0.3)
+    #         print(f"complete package name {app}")
+    #     except Exception as e:
+    #         error_game_list.append(app)
+    #         continue
 
-    file_path = "cafebazaar/data/cafebazaar_games.json"
-    with open(file_path, "a") as file:
-        json.dump(json_game_list, file, indent=4)
+    # file_path = "cafebazaar/data/cafebazaar_games.json"
+    # with open(file_path, "a") as file:
+    #     json.dump(json_game_list, file, indent=4)
         
-    erro_game_path = "cafebazaar/data/error_app.txt"
-    with open(erro_game_path, "a") as file:
-        for item in error_game_list:
-            file.write(f"{item}\n")
+    # erro_game_path = "cafebazaar/data/error_app.txt"
+    # with open(erro_game_path, "a") as file:
+    #     for item in error_game_list:
+    #         file.write(f"{item}\n")
             
